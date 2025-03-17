@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Recommendation</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            animation: gradientBG 15s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 1200px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .form-container {
+            flex: 0 0 60%;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2 {
+            color: #fff;
+            font-size: 32px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            padding: 10px 0;
+        }
+
+        form {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+            display: block;
+            font-size: 18px;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            border-color: #fdbb2d;
+            box-shadow: 0 0 15px rgba(253, 187, 45, 0.3);
+            transform: translateY(-2px);
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(45deg, #fdbb2d, #b21f1f);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #b21f1f, #fdbb2d);
+        }
+
+        .result-container {
+            flex: 0 0 35%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            min-width: 250px;
+            margin-left: auto;
+            margin-top: 50px; /* Move the result a little down */
+        }
+
+        .result p {
+        font-size: 40px;  /* Increase font size */
+        font-weight: bold;  /* Make text bold */
+        color: #fff;  /* Ensure good visibility */
+        text-transform:capitalize;  /* Optional: Convert text to uppercase */
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Add slight shadow for emphasis */
+        }
+
+        .result {
+    font-size: 30px; /* Adjusted font size for the prediction text */
+    padding: 20px; /* Increased padding for better spacing */
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 40px;
+    color: #fff;
+    text-align: center;
+    backdrop-filter: blur(5px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    animation: fadeIn 0.5s ease-out;
+    display: flex;
+    flex-direction: column;
+    margin-top: 100px;
+}
+
+.result h3 {
+    font-size: 24px; /* Adjusted font size for "Recommended Crop" */
+    margin-bottom: 10px; /* Reduced gap between heading and prediction */
+}
+
+
+
+        .image-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 250px;
+        }
+
+        .crop-image {
+            width: 100%;
+            max-width: 250px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .crop-image:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            form {
+                grid-template-columns: 1fr;
+            }
+
+            .result-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h2> Crop Recommendation </h2>
+            <form action="/crop_recom" method="POST">
+                <div class="input-group">
+                    <label for="N">Nitrogen (N)</label>
+                    <input type="number" name="N" placeholder="Enter Nitrogen value (kg/ha)" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="P">Phosphorus (P)</label>
+                    <input type="number" name="P" placeholder="Enter Phosphorus value (kg/ha)" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="K">Potassium (K)</label>
+                    <input type="number" name="K" placeholder="Enter Potassium value (kg/ha)" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="temperature">Temperature</label>
+                    <input type="number" name="temperature" placeholder="Enter Temperature (°C)" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="humidity">Humidity</label>
+                    <input type="number" step="any" name="humidity" placeholder="Enter Humidity (%)" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="ph">pH Level</label>
+                    <input type="number" step="any" name="ph" placeholder="Enter pH level (0-14)" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="rainfall">Annual Rainfall</label>
+                    <input type="number" step="any" name="rainfall" placeholder="Enter Rainfall (mm)" required>
+                </div>
+
+                <button type="submit">Predict Ideal Crop</button>
+            </form>
+        </div>
+
+        {% if prediction %}
+        <div class="result-container">
+            <div class="result">
+                <h3>Recommended Crop</h3>
+                <p>{{ prediction | join(', ') }}</p>
+            </div>
+
+            <div class="image-container">
+                <img src="{{ url_for('static', filename='crop_images/' + crop_image) }}" alt="Crop Image" class="crop-image">
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

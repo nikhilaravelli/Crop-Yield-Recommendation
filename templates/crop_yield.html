@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Yield Prediction</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            background: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef') no-repeat center center/cover;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 20px;
+            width: 80%;
+            max-width: 800px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        h2 {
+            font-size: 2.5em;
+            color: #ffcc00;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+            text-align: center;
+            width: 100%;
+            padding: 10px 0;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .form-group {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+            position: relative;
+        }
+        label {
+            font-size: 18px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+            color: #ffcc00;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+        }
+        button {
+            margin-top: 20px;
+            background: linear-gradient(45deg, #ffcc00, #ff8800);
+            color: #333;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background: linear-gradient(45deg, #ff8800, #ff5500);
+            transform: translateY(-3px);
+        }
+        .result {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            background: linear-gradient(45deg, #ffcc00, #ff8800);
+            color: #333;
+            padding: 15px 30px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.5s ease-in-out;        
+            }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🌾 Crop Yield Prediction 🌾</h2>
+        <form action="/crop_yield" method="POST">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="Crop">Crop</label>
+                    <input type="text" name="Crop" placeholder="e.g., Rice, Wheat, Cotton" required>
+                </div>
+                <div class="form-group">
+                    <label for="Crop_Year">Crop Year</label>
+                    <input type="number" name="Crop_Year" placeholder="e.g., 2023" min="1900" max="2100" required>
+                </div>
+                <div class="form-group">
+                    <label for="Season">Season</label>
+                    <input type="text" name="Season" placeholder="e.g., Kharif, Rabi, Summer" required>
+                </div>
+                <div class="form-group">
+                    <label for="State">State</label>
+                    <input type="text" name="State" placeholder="e.g., Andhra Pradesh, Tamil Nadu" required>
+                </div>
+                <div class="form-group">
+                    <label for="Area">Area</label>
+                    <input type="number" step="0.01" name="Area" placeholder="Area in hectares (ha)" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="Production">Production</label>
+                    <input type="number" step="0.01" name="Production" placeholder="Production in tonnes" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="Annual_Rainfall">Annual Rainfall</label>
+                    <input type="number" step="0.01" name="Annual_Rainfall" placeholder="Rainfall in mm" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="Fertilizer">Fertilizer Usage</label>
+                    <input type="number" step="0.01" name="Fertilizer" placeholder="Fertilizer in kg/ha" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="Pesticide">Pesticide Usage</label>
+                    <input type="number" step="0.01" name="Pesticide" placeholder="Pesticide in kg/ha" min="0" required>
+                </div>
+            </div>
+            <button type="submit"> Predict Yield </button>
+        </form>
+        {% if prediction is not none %}
+            <div class="result">Predicted Yield: {{prediction}} Kg/Ha</div>
+        {% endif %}
+    </div>
+</body>
+</html>
